@@ -7,6 +7,8 @@ import {MatSortModule} from '@angular/material/sort';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
+import { InfiniteScrollModule} from 'ngx-infinite-scroll';
+
 import { AppComponent } from './app.component';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -14,6 +16,8 @@ import { BootrapPageComponent } from './bootrap-page/bootrap-page.component';
 import { MaterialsComponent } from './materials/materials.component';
 import { DataTableJSComponent } from './data-table-js/data-table-js.component';
 import { NavigatorComponent } from './navigator/navigator.component';
+import { InfiniteScrollComponent } from './materials/infinite-scroll/infinite-scroll.component';
+import { NgxInfiniteScrollExampleComponent } from './materials/ngx-infinite-scroll-example/ngx-infinite-scroll-example.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +25,9 @@ import { NavigatorComponent } from './navigator/navigator.component';
     BootrapPageComponent,
     MaterialsComponent,
     NavigatorComponent,
-    DataTableJSComponent
+    DataTableJSComponent,
+    InfiniteScrollComponent,
+    NgxInfiniteScrollExampleComponent
    ],
   imports: [
     BrowserModule,
@@ -31,7 +37,8 @@ import { NavigatorComponent } from './navigator/navigator.component';
     MatTableModule,
     MatSortModule,
     ScrollingModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    InfiniteScrollModule
   ],
   providers: [],
   bootstrap: [AppComponent]

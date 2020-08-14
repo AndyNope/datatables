@@ -25,6 +25,7 @@
     "bootstrap": "^4.5.2",
     "jQuery": "^1.7.4",
     "jquery": "^3.5.1",
+    "ngx-infinite-scroll": "^9.0.0",
     "rxjs": "~6.5.5",
     "save": "^2.4.0",
     "tslib": "^2.0.0",
