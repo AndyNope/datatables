@@ -17,7 +17,6 @@ import { MaterialsComponent } from './materials/materials.component';
 import { DataTableJSComponent } from './data-table-js/data-table-js.component';
 import { NavigatorComponent } from './navigator/navigator.component';
 import { InfiniteScrollComponent } from './materials/infinite-scroll/infinite-scroll.component';
-import { NgxInfiniteScrollExampleComponent } from './materials/ngx-infinite-scroll-example/ngx-infinite-scroll-example.component';
 
 @NgModule({
   declarations: [
@@ -26,8 +25,7 @@ import { NgxInfiniteScrollExampleComponent } from './materials/ngx-infinite-scro
     MaterialsComponent,
     NavigatorComponent,
     DataTableJSComponent,
-    InfiniteScrollComponent,
-    NgxInfiniteScrollExampleComponent
+    InfiniteScrollComponent
    ],
   imports: [
     BrowserModule,
