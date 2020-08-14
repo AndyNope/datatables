@@ -43,9 +43,9 @@ export class MaterialsComponent implements OnInit {
     { position: 31, name: 'Zoolab', weight: 41, symbol: 'Sr' },
     { position: 32, name: 'Span', weight: 38, symbol: 'II' }
   ];
+
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   public myDataArray: MatTableDataSource<any>;
-
   private paginator: MatPaginator;
   private sort: MatSort;
 
