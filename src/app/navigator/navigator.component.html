@@ -1,0 +1,23 @@
+<div class="navbar-light">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" routerLink="/">Datatables</a>
+        <button class="navbar-toggler" type="button" (click)="collapsed = !collapsed">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" [class.collapse]="collapsed" (window:resize)="collapsed = true">
+            <ul class="navbar-nav ml-auto" (click)="collapsed = !collapsed">
+                <li class="nav-item" role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+                    <a class="nav-link" routerLink="/">
+                        Angular Material
+                    </a>
+                </li>
+                <li class="nav-item" role="presentation" routerLinkActive="active">
+                    <a class="nav-link" routerLink="/bootstrap">Bootstrap</a>
+                </li>
+                <li class="nav-item" role="presentation" routerLinkActive="active">
+                    <a class="nav-link" routerLink="/datatableJS">DatatableJS</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
