@@ -1,6 +1,6 @@
 <h1>Paginator & Sort</h1>
 <div>
-    <button>+</button>
+    <button (click)="addElement()">+</button>
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
 </div>
 <table mat-table [dataSource]="myDataArray" matSort class="mat-elevation-z8">

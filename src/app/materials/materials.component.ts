@@ -3,6 +3,10 @@ import { PeriodicElement } from './periodic-element.model';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+
+import { EditDialogComponent } from '../shared/modal/edit/edit.dialog.component';
+import { AddDialogComponent } from '../shared/modal/add/add.dialog.component';
 
 @Component({
   selector: 'app-materials',
@@ -59,8 +63,8 @@ export class MaterialsComponent implements OnInit {
     this.setDataSourceAttributes();
   }
 
-  constructor() {
-    if (!localStorage) {
+  constructor(private dialog: MatDialog) {
+    if (localStorage.length === 0) {
       localStorage.elements = JSON.stringify(this.ELEMENT_DATA);
     }
     this.myDataArray = new MatTableDataSource(JSON.parse(localStorage.elements));
@@ -84,11 +88,33 @@ export class MaterialsComponent implements OnInit {
    * Add a new element
    */
   addElement(): void {
-
+    const dialogRef = this.dialog.open(AddDialogComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'success') {
+        this.myDataArray = new MatTableDataSource(JSON.parse(localStorage.elements));
+        this.myDataArray.paginator = this.paginator;
+        this.myDataArray.paginator.lastPage();
+      } else if (result === 'error') {
+        alert('Etwas ist schiefgelaufen.');
+      }
+    });
   }
 
   editElement(id: number): void {
-    alert(id);
+    const dialogRef = this.dialog.open(EditDialogComponent, {
+      data: {
+        id,
+      }
+    }
+    );
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'success') {
+        this.myDataArray = new MatTableDataSource(JSON.parse(localStorage.elements));
+        this.myDataArray.paginator = this.paginator;
+      } else if (result === 'error') {
+        alert('Etwas ist schiefgelaufen.');
+      }
+    });
   }
 
   /**
