@@ -72,9 +72,10 @@ export class InfiniteScrollComponent implements OnInit {
     { position: 59, name: 'Potassium', weight: 39.0983, symbol: 'K' },
     { position: 60, name: 'Calcium', weight: 40.078, symbol: 'Ca' },
   ];
-  public filteredData: PeriodicElement[] = [];
+  filteredDatas: PeriodicElement[];
   public dataSource: MatTableDataSource<PeriodicElement>;
   filter = '';
+  filtermax = 0;
   start = 0;
   end = 9;
   private sort: MatSort;
@@ -105,10 +106,11 @@ export class InfiniteScrollComponent implements OnInit {
       let loadedData;
       let data = this.dataSource.data;
       if (this.filter.length > 2) {
-        data = this.filteredData;
+        data = this.filteredDatas;
         loadedData = this.getTableDataFiltered(this.start, this.end);
-        if (this.filteredData.length > this.end) {
-          console.log(this.filteredData.length);
+        console.log('Data lenght: ' + data.length);
+        console.log('filtermax lenght: ' + this.filtermax);
+        if (data.length > this.filtermax) {
           data.push(loadedData[0]);
         }
       } else {
@@ -118,10 +120,10 @@ export class InfiniteScrollComponent implements OnInit {
           data.push(loadedData[0]);
         }
       }
-      // console.log(data);
 
       this.dataSource = new MatTableDataSource(data);
       this.updateIndex();
+      this.setDataSourceAttributes();
     }
   }
 
@@ -130,10 +132,13 @@ export class InfiniteScrollComponent implements OnInit {
   }
 
   getTableDataFiltered(start: number, end: number): any {
-    return this.filteredData.filter((value, index) => index >= start && index < end);
+    return this.filteredDatas.filter((value, index) => index >= start && index < end);
   }
 
   updateIndex(): void {
+    console.log('updatedIndex');
+    console.log('Start: ' + this.start);
+    console.log('End: ' + this.end);
     this.start = this.end;
     this.end = this.start + 1;
   }
@@ -152,16 +157,16 @@ export class InfiniteScrollComponent implements OnInit {
       this.filter = this.filter.toLowerCase(); // Datasource defaults to lowercase matches
       const toFilter = new MatTableDataSource(this.ELEMENT_DATA);
       toFilter.filter = this.filter;
-      this.filteredData = toFilter.filteredData;
+      this.filteredDatas = toFilter.filteredData;
+      this.filtermax = toFilter.filteredData.length;
       this.dataSource = this.getTableDataFiltered(this.start, this.end);
-      console.log(this.end);
-      console.log(this.filteredData.length);
     } else {
       this.start = 0;
       this.end = 9;
       this.dataSource.filter = '';
       this.dataSource = new MatTableDataSource(this.getTableData(this.start, this.end));
     }
+    this.setDataSourceAttributes();
   }
 
 
