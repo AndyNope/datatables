@@ -44,7 +44,7 @@ export class MaterialsComponent implements OnInit {
     { position: 32, name: 'Span', weight: 38, symbol: 'II' }
   ];
 
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'edit'];
   public myDataArray: MatTableDataSource<any>;
   private paginator: MatPaginator;
   private sort: MatSort;
@@ -66,6 +66,34 @@ export class MaterialsComponent implements OnInit {
     this.myDataArray = new MatTableDataSource(JSON.parse(localStorage.elements));
   }
 
+  /**
+   * This function use a filter to find specific data
+   * @param filterValue is the value to filter
+   */
+  applyFilter(filterValue: string): void {
+    if (filterValue.length > 2) {
+      filterValue = filterValue.trim(); // Remove whitespace
+      filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+      this.myDataArray.filter = filterValue;
+    } else {
+      this.myDataArray.filter = '';
+    }
+  }
+
+  /**
+   * Add a new element
+   */
+  addElement(): void {
+
+  }
+
+  editElement(id: number): void {
+    alert(id);
+  }
+
+  /**
+   * This function enable to sort and use the paginator at the same time.
+   */
   setDataSourceAttributes(): void {
     this.myDataArray.paginator = this.paginator;
     this.myDataArray.sort = this.sort;

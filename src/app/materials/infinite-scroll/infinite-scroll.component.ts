@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { PeriodicElement } from '../periodic-element.model';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-infinite-scroll',
@@ -8,7 +10,6 @@ import { PeriodicElement } from '../periodic-element.model';
 })
 export class InfiniteScrollComponent implements OnInit {
   displayedColumns = ['position', 'name', 'weight', 'symbol'];
-
   ELEMENT_DATA: PeriodicElement[] = [
     { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
     { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
@@ -71,13 +72,28 @@ export class InfiniteScrollComponent implements OnInit {
     { position: 59, name: 'Potassium', weight: 39.0983, symbol: 'K' },
     { position: 60, name: 'Calcium', weight: 40.078, symbol: 'Ca' },
   ];
-  dataSource = this.ELEMENT_DATA;
+  public filteredData: PeriodicElement[] = [];
+  public dataSource: MatTableDataSource<PeriodicElement>;
+  filter = '';
   start = 0;
-  limit = 10;
-  end = this.limit + 1;
+  end = 9;
+  private sort: MatSort;
+
+  @ViewChild(MatSort) set matSort(ms: MatSort) {
+    this.sort = ms;
+    this.setDataSourceAttributes();
+  }
+
   constructor() { }
 
-  onTableScroll(e): void {
+  /**
+   * This function enable to sort and use the paginator at the same time.
+   */
+  setDataSourceAttributes(): void {
+    this.dataSource.sort = this.sort;
+  }
+
+  onTableScroll(e: { target: { offsetHeight: any; scrollHeight: any; scrollTop: any; }; }): void {
     const tableViewHeight = e.target.offsetHeight; // viewport
     const tableScrollHeight = e.target.scrollHeight; // length of all table
     const scrollLocation = e.target.scrollTop; // how far user scrolled
@@ -86,23 +102,71 @@ export class InfiniteScrollComponent implements OnInit {
     const buffer = 200;
     const limit = tableScrollHeight - tableViewHeight - buffer;
     if (scrollLocation > limit) {
-      const data = this.getTableData(this.start, this.end);
-      this.dataSource = this.dataSource.concat(data);
+      let loadedData;
+      let data = this.dataSource.data;
+      if (this.filter.length > 2) {
+        data = this.filteredData;
+        loadedData = this.getTableDataFiltered(this.start, this.end);
+        if (this.filteredData.length > this.end) {
+          console.log(this.filteredData.length);
+          data.push(loadedData[0]);
+        }
+      } else {
+        data = this.dataSource.data;
+        loadedData = this.getTableData(this.start, this.end);
+        if (loadedData.length > 0) {
+          data.push(loadedData[0]);
+        }
+      }
+      // console.log(data);
+
+      this.dataSource = new MatTableDataSource(data);
       this.updateIndex();
     }
   }
 
-  getTableData(start, end): Array<any> {
+  getTableData(start: number, end: number): any {
     return this.ELEMENT_DATA.filter((value, index) => index >= start && index < end);
+  }
+
+  getTableDataFiltered(start: number, end: number): any {
+    return this.filteredData.filter((value, index) => index >= start && index < end);
   }
 
   updateIndex(): void {
     this.start = this.end;
-    this.end = this.limit + this.start;
+    this.end = this.start + 1;
   }
 
+
+  /**
+   * This function use a filter to find specific data
+   * @param filterValue is the value to filter
+   */
+  applyFilter(filterValue: string): void {
+    this.filter = filterValue;
+    if (this.filter.length > 2) {
+      this.start = 0;
+      this.end = 9;
+      this.filter = this.filter.trim(); // Remove whitespace
+      this.filter = this.filter.toLowerCase(); // Datasource defaults to lowercase matches
+      const toFilter = new MatTableDataSource(this.ELEMENT_DATA);
+      toFilter.filter = this.filter;
+      this.filteredData = toFilter.filteredData;
+      this.dataSource = this.getTableDataFiltered(this.start, this.end);
+      console.log(this.end);
+      console.log(this.filteredData.length);
+    } else {
+      this.start = 0;
+      this.end = 9;
+      this.dataSource.filter = '';
+      this.dataSource = new MatTableDataSource(this.getTableData(this.start, this.end));
+    }
+  }
+
+
   ngOnInit(): void {
-    this.dataSource = this.getTableData(this.start, this.end);
+    this.dataSource = new MatTableDataSource(this.getTableData(this.start, this.end));
     this.updateIndex();
   }
 }

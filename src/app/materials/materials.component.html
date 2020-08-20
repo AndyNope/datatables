@@ -1,6 +1,9 @@
 <h1>Paginator & Sort</h1>
+<div>
+    <button>+</button>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+</div>
 <table mat-table [dataSource]="myDataArray" matSort class="mat-elevation-z8">
-
     <!-- Position Column -->
     <ng-container matColumnDef="position">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>
@@ -24,10 +27,13 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Symbol </th>
         <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
     </ng-container>
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+        <td mat-cell *matCellDef="let element"> <button (click)="editElement(element.position)">Edit</button></td>
+    </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
 <mat-paginator [length]="100" [pageSize]="5"></mat-paginator>
-
-<app-infinite-scroll></app-infinite-scroll>
