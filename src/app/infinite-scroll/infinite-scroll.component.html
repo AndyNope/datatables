@@ -1,10 +1,11 @@
 <h1>Infinite Scroll - Lazy Loading</h1>
 
+<div class="input-group mb-3">
+    <button type="button" class="btn btn-light" matTooltip="Add an element">+</button>
+    <input class="form-control" matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+</div>
 <div class="example-container mat-elevation-z8">
-    <div>
-        <button>+</button>
-        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
-    </div>
+
     <mat-table #table [dataSource]="dataSource" (scroll)="onTableScroll($event)" matSort>
 
         <!--- Note that these columns can be defined in any order.
@@ -13,25 +14,25 @@
         <!-- Position Column -->
         <ng-container matColumnDef="position">
             <mat-header-cell *matHeaderCellDef mat-sort-header> No. </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+            <mat-cell *matCellDef="let element" (click)="showId(element.position)"> {{element.position}} </mat-cell>
         </ng-container>
 
         <!-- Name Column -->
         <ng-container matColumnDef="name">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+            <mat-cell *matCellDef="let element" (click)="showId(element.position)"> {{element.name}} </mat-cell>
         </ng-container>
 
         <!-- Weight Column -->
         <ng-container matColumnDef="weight">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Weight </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
+            <mat-cell *matCellDef="let element" (click)="showId(element.position)"> {{element.weight}} </mat-cell>
         </ng-container>
 
         <!-- Symbol Column -->
         <ng-container matColumnDef="symbol">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Symbol </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
+            <mat-cell *matCellDef="let element" (click)="showId(element.position)"> {{element.symbol}} </mat-cell>
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

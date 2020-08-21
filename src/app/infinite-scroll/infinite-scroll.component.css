@@ -9,3 +9,9 @@
     overflow: auto;
     max-height: 500px;
 }
+
+.mat-header-row {
+    position: sticky;
+    top: 0;
+    background: white;
+}

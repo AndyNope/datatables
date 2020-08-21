@@ -1,1 +1,39 @@
-<p>data-table-js works!</p>
+<h1>Standard</h1>
+<table id="table_id" class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Name</th>
+            <th>Weight</th>
+            <th>Symbol</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let element of elements">
+            <td>{{element.position}}</td>
+            <td>{{element.name}}</td>
+            <td>{{element.weight}}</td>
+            <td>{{element.symbol}}</td>
+        </tr>
+    </tbody>
+</table>
+<br>
+<h1>Scrolling</h1>
+<table id="myTable" class="display">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Name</th>
+            <th>Weight</th>
+            <th>Symbol</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let element of elements">
+            <td>{{element.position}}</td>
+            <td>{{element.name}}</td>
+            <td>{{element.weight}}</td>
+            <td>{{element.symbol}}</td>
+        </tr>
+    </tbody>
+</table>

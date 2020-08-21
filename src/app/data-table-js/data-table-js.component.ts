@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { PeriodicElement } from '../shared/model/periodic-element.model';
+
+
+declare function startDataTablejs(): any;
 
 @Component({
   selector: 'app-data-table-js',
@@ -6,9 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DataTableJSComponent implements OnInit {
 
-  constructor() { }
+  elements: PeriodicElement;
+
+  constructor() {
+    this.elements = JSON.parse(localStorage.elements);
+  }
 
   ngOnInit(): void {
+    setTimeout(() => {
+      startDataTablejs();
+    }, 0);
   }
 
 }

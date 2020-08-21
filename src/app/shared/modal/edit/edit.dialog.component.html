@@ -1,7 +1,11 @@
 <h2 mat-dialog-title>Edit Element</h2>
 <mat-dialog-content class="mat-typography">
     <p>Name: </p>
-    <input (keyup)="applyInput($event.target.value)" value="{{element}}">
+    <input (keyup)="applyName($event.target.value)" value="{{name}}">
+    <p>Weigth: </p>
+    <input (keyup)="applyWeight($event.target.value)" value="{{weight}}">
+    <p>Symbol: </p>
+    <input (keyup)="applySymbol($event.target.value)" value="{{symbol}}">
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>

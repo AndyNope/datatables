@@ -7,6 +7,8 @@ import {MatSortModule} from '@angular/material/sort';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import {MatIconModule} from '@angular/material/icon';
 
 import { InfiniteScrollModule} from 'ngx-infinite-scroll';
 
@@ -17,7 +19,7 @@ import { BootrapPageComponent } from './bootrap-page/bootrap-page.component';
 import { MaterialsComponent } from './materials/materials.component';
 import { DataTableJSComponent } from './data-table-js/data-table-js.component';
 import { NavigatorComponent } from './navigator/navigator.component';
-import { InfiniteScrollComponent } from './materials/infinite-scroll/infinite-scroll.component';
+import { InfiniteScrollComponent } from './infinite-scroll/infinite-scroll.component';
 import { EditDialogComponent } from './shared/modal/edit/edit.dialog.component';
 import { AddDialogComponent } from './shared/modal/add/add.dialog.component';
 
@@ -42,6 +44,8 @@ import { AddDialogComponent } from './shared/modal/add/add.dialog.component';
     ScrollingModule,
     MatPaginatorModule,
     MatDialogModule,
+    MatTooltipModule,
+    MatIconModule,
     InfiniteScrollModule
   ],
   providers: [],

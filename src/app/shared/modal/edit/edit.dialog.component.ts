@@ -11,7 +11,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class EditDialogComponent {
     id: number;
     elements;
-    element;
+    name;
+    weight;
+    symbol;
+
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -19,7 +22,9 @@ export class EditDialogComponent {
     ) {
         this.id = this.data.id;
         this.getElements(this.id);
-        this.element = this.elements.name;
+        this.name = this.elements.name;
+        this.weight = this.elements.weight;
+        this.symbol = this.elements.symbol;
     }
 
     /**
@@ -34,13 +39,21 @@ export class EditDialogComponent {
         const elements = JSON.parse(localStorage.elements);
         elements.forEach((element) => {
             if (element.position === this.id) {
-                element.name = this.element;
+                element.name = this.name;
+                element.weight = this.weight;
+                element.symbol = this.symbol;
             }
         });
         localStorage.elements = JSON.stringify(elements);
     }
-    applyInput(input: string): void {
-        this.element = input;
+    applyName(input: string): void {
+        this.name = input;
+    }
+    applyWeight(input: string): void {
+        this.weight = input;
+    }
+    applySymbol(input: string): void {
+        this.symbol = input;
     }
     getElements(id: number): void {
         const elements = JSON.parse(localStorage.elements);
