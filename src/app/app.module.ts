@@ -15,7 +15,7 @@ import { InfiniteScrollModule} from 'ngx-infinite-scroll';
 import { AppComponent } from './app.component';
 
 import { AppRoutingModule } from './app-routing.module';
-import { BootrapPageComponent } from './bootrap-page/bootrap-page.component';
+import { BootstrapPageComponent } from './bootstrap-page/bootstrap-page.component';
 import { MaterialsComponent } from './materials/materials.component';
 import { DataTableJSComponent } from './data-table-js/data-table-js.component';
 import { NavigatorComponent } from './navigator/navigator.component';
@@ -26,7 +26,7 @@ import { AddDialogComponent } from './shared/modal/add/add.dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
-    BootrapPageComponent,
+    BootstrapPageComponent,
     MaterialsComponent,
     NavigatorComponent,
     DataTableJSComponent,

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MaterialsComponent } from './materials/materials.component';
-import { BootrapPageComponent } from './bootrap-page/bootrap-page.component';
+import { BootstrapPageComponent } from './bootstrap-page/bootstrap-page.component';
 import { DataTableJSComponent } from './data-table-js/data-table-js.component';
 import { InfiniteScrollComponent } from './infinite-scroll/infinite-scroll.component';
 
@@ -10,7 +10,7 @@ import { InfiniteScrollComponent } from './infinite-scroll/infinite-scroll.compo
 const appRoutes: Routes = [
     { path: '', component: MaterialsComponent },
     { path: 'infinit', component: InfiniteScrollComponent },
-    { path: 'bootstrap', component: BootrapPageComponent },
+    { path: 'bootstrap', component: BootstrapPageComponent },
     { path: 'datatableJS', component: DataTableJSComponent },
     { path: '**', redirectTo: '/' }
 ];

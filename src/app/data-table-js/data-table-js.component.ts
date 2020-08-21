@@ -10,16 +10,17 @@ declare function startDataTablejs(): any;
 })
 export class DataTableJSComponent implements OnInit {
 
-  elements: PeriodicElement;
+  elements: PeriodicElement = JSON.parse(localStorage.elements);
 
   constructor() {
-    this.elements = JSON.parse(localStorage.elements);
+  }
+
+  showId(id: number): void {
+    alert('ID: ' + this.elements[id - 1].position);
   }
 
   ngOnInit(): void {
-    setTimeout(() => {
-      startDataTablejs();
-    }, 0);
+    startDataTablejs();
   }
 
 }

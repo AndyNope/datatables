@@ -1,0 +1,24 @@
+<h1>Tables with bootstrap</h1>
+<div class="input-group mb-3">
+    <input class="form-control" (keyup)="applyFilter($event.target.value)" placeholder="Search" data-toggle="tooltip" data-placement="top" title="Find an element">
+</div>
+<div id="table" (scroll)="onTableScroll($event)">
+    <table class="table-hover">
+        <thead>
+            <tr>
+                <th scope="col" (click)="sortById()">No</th>
+                <th scope="col" (click)="sortByName()">Name</th>
+                <th scope="col" (click)="sortByWeight()">Weight</th>
+                <th scope="col" (click)="sortBySymbol()">Symbol</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let element of elements">
+                <td (click)="showId(element.position)">{{element.position}}</td>
+                <td (click)="showId(element.position)" data-toggle="tooltip" data-placement="bottom" title="{{element.name}}">{{element.name}}</td>
+                <td (click)="showId(element.position)">{{element.weight}}</td>
+                <td (click)="showId(element.position)">{{element.symbol}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

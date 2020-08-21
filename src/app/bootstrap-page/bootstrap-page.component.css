@@ -1,0 +1,12 @@
+table {
+    height: 100vh;
+}
+
+#table {
+    height: calc(100vh - 200px);
+    overflow: auto;
+}
+
+td {
+    height: 80px;
+}

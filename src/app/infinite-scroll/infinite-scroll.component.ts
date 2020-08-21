@@ -56,8 +56,6 @@ export class InfiniteScrollComponent implements OnInit {
       if (this.filter.length > 2) {
         data = this.filteredDatas;
         loadedData = this.getTableDataFiltered(this.start, this.end);
-        console.log('Data lenght: ' + data.length);
-        console.log('filtermax lenght: ' + this.filtermax);
         if (data.length > this.filtermax) {
           data.push(loadedData[0]);
         }

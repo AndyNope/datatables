@@ -10,10 +10,10 @@
     </thead>
     <tbody>
         <tr *ngFor="let element of elements">
-            <td>{{element.position}}</td>
-            <td>{{element.name}}</td>
-            <td>{{element.weight}}</td>
-            <td>{{element.symbol}}</td>
+            <td (click)="showId(element.position)">{{element.position}}</td>
+            <td (click)="showId(element.position)">{{element.name}}</td>
+            <td (click)="showId(element.position)">{{element.weight}}</td>
+            <td (click)="showId(element.position)">{{element.symbol}}</td>
         </tr>
     </tbody>
 </table>

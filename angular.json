@@ -35,13 +35,15 @@
                             "src/styles.css"
                         ],
                         "scripts": [
-                            "node_modules/jQuery/dist/jquery.min.js",
+                            "node_modules/jquery/dist/jquery.min.js",
                             "node_modules/datatables.net/js/jquery.dataTables.min.js",
                             "node_modules/datatables.net-dt/js/dataTables.dataTables.min.js",
                             "node_modules/datatables.net-scroller/js/dataTables.scroller.min.js",
                             "node_modules/datatables.net-scroller-dt/js/scroller.dataTables.min.js",
                             "src/assets/js/datatablejs.js",
-                            "node_modules/bootstrap/dist/js/bootstrap.min.js"
+                            "node_modules/bootstrap/dist/js/bootstrap.min.js",
+                            "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+                            "src/assets/js/bootstraptooltip.js"
                         ]
                     },
                     "configurations": {
