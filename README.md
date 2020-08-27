@@ -1,4 +1,4 @@
-DemoPage: https://datatables.maid-cafe.ch
+# DemoPage: [Click here](https://datatables.maid-cafe.ch)
 
 # Datatabletypes
 
