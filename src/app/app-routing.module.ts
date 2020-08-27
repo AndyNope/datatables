@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
 import { MaterialsComponent } from './materials/materials.component';
 import { BootstrapPageComponent } from './bootstrap-page/bootstrap-page.component';
 import { DataTableJSComponent } from './data-table-js/data-table-js.component';

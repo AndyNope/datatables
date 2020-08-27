@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { PeriodicElement } from '../shared/model/periodic-element.model';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -62,6 +61,10 @@ export class MaterialsComponent implements OnInit {
     });
   }
 
+  /**
+   * Edit element
+   * @param id is to identify the corect element
+   */
   editElement(id: number): void {
     const dialogRef = this.dialog.open(EditDialogComponent, {
       data: {

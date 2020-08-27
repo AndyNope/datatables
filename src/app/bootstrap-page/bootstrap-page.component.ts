@@ -21,6 +21,10 @@ export class BootstrapPageComponent implements OnInit {
     this.end = 13;
   }
 
+  /**
+   * Show the id of an element
+   * @param id is the id of the element
+   */
   showId(id: number): void {
     alert('ID: ' + this.elements[id - 1].position);
   }
@@ -45,6 +49,10 @@ export class BootstrapPageComponent implements OnInit {
     }
   }
 
+  /**
+   * Check on Scroll if it's on limit
+   * @param e wait for a scroll action
+   */
   onTableScroll(e: { target: { offsetHeight: any; scrollHeight: any; scrollTop: any; }; }): void {
     const tableViewHeight = e.target.offsetHeight; // viewport
     const tableScrollHeight = e.target.scrollHeight; // length of all table
@@ -66,10 +74,18 @@ export class BootstrapPageComponent implements OnInit {
     }
   }
 
+  /**
+   * Get this Array range
+   * @param start Start of the Range
+   * @param end End of the Range
+   */
   getTableData(start: number, end: number): any {
     return this.elementsStore.filter((value, index) => index >= start && index < end);
   }
 
+  /**
+   * Sort the Array by name
+   */
   sortByName(): void {
     const data = this.elements;
     data.sort((a, b) => {
@@ -78,12 +94,18 @@ export class BootstrapPageComponent implements OnInit {
     this.elements = data;
   }
 
+  /**
+   * Sort the Array by weight
+   */
   sortByWeight(): void {
     const data = this.elements;
     data.sort((a, b) => a.weight - b.weight);
     this.elements = data;
   }
 
+  /**
+   * Sort the Array by id
+   */
   sortById(): void {
     console.log('sort');
     const data = this.elements;
@@ -91,6 +113,9 @@ export class BootstrapPageComponent implements OnInit {
     this.elements = data;
   }
 
+  /**
+   * Sort the Array by symbol
+   */
   sortBySymbol(): void {
     const data = this.elements;
     data.sort((a, b) => {
@@ -99,6 +124,10 @@ export class BootstrapPageComponent implements OnInit {
     this.elements = data;
   }
 
+  /**
+   * Search a keyword from an array
+   * @return a boolean
+   */
   findKeyWord(keyword: string, toCompare: any): boolean {
     const name: string = toCompare.name.toLowerCase();
     let weight: string = toCompare.weight.toString();
@@ -114,6 +143,9 @@ export class BootstrapPageComponent implements OnInit {
     return false;
   }
 
+  /**
+   * set the next range
+   */
   updateIndex(): void {
     this.start = this.end;
     this.end = this.start + 1;

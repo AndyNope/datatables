@@ -7,6 +7,8 @@ import { PeriodicElement } from './shared/model/periodic-element.model';
 })
 export class AppComponent {
   title = 'datatabletypes';
+
+  // prepare the data
   ELEMENT_DATA: PeriodicElement[] = [
     { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
     { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
@@ -70,6 +72,7 @@ export class AppComponent {
     { position: 60, name: 'Calcium', weight: 40.078, symbol: 'Ca' }
   ];
   constructor() {
+    // Saves in the Localstorage
     if (localStorage.length === 0) {
       localStorage.elements = JSON.stringify(this.ELEMENT_DATA);
     }

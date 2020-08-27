@@ -42,6 +42,10 @@ export class InfiniteScrollComponent implements OnInit {
 
   }
 
+  /**
+   * Check on Scroll if it's on limit
+   * @param e wait for a scroll action
+   */
   onTableScroll(e: { target: { offsetHeight: any; scrollHeight: any; scrollTop: any; }; }): void {
     const tableViewHeight = e.target.offsetHeight; // viewport
     const tableScrollHeight = e.target.scrollHeight; // length of all table
@@ -73,19 +77,36 @@ export class InfiniteScrollComponent implements OnInit {
     }
   }
 
+  /**
+   * Get this Array range
+   * @param start Start of the Range
+   * @param end End of the Range
+   */
   getTableData(start: number, end: number): any {
     return this.ELEMENT_DATA.filter((value, index) => index >= start && index < end);
   }
 
+  /**
+   * Get range of filtered array
+   * @param start Start of the Range
+   * @param end End of the Range
+   */
   getTableDataFiltered(start: number, end: number): any {
     return this.filteredDatas.filter((value, index) => index >= start && index < end);
   }
 
+  /**
+   * set the next range
+   */
   updateIndex(): void {
     this.start = this.end;
     this.end = this.start + 1;
   }
 
+  /**
+   * Show the id of an element
+   * @param id is the id of the element
+   */
   showId(id: number): void {
     alert(this.ELEMENT_DATA[id - 1].position);
   }
