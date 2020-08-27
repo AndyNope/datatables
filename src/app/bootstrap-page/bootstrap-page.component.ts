@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 declare function startBootstrapToolTip(): any;
 @Component({
@@ -14,9 +14,8 @@ export class BootstrapPageComponent implements OnInit {
   public filtered = [];
   start: number;
   end: number;
-  @ViewChild('td') td;
 
-  constructor(private elRef: ElementRef) {
+  constructor() {
     this.start = 0;
     this.end = 13;
   }

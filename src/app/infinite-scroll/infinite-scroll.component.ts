@@ -13,7 +13,8 @@ export class InfiniteScrollComponent implements OnInit {
   ELEMENT_DATA: PeriodicElement[] = JSON.parse(localStorage.elements);
   filteredDatas: PeriodicElement[];
   public dataSource: MatTableDataSource<PeriodicElement>;
-  winHeight;
+  public innerWidth: number = Math.round(window.innerWidth);
+  public innerHeight: number = Math.round(window.innerHeight);
   filter = '';
   filtermax = 0;
   start: number;
@@ -39,7 +40,10 @@ export class InfiniteScrollComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event): void {
-
+    this.start = 0;
+    this.end = Math.round(this.innerHeight / 70);
+    this.dataSource = new MatTableDataSource(this.getTableData(this.start, this.end));
+    console.log('resize');
   }
 
   /**
@@ -138,7 +142,8 @@ export class InfiniteScrollComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource(this.getTableData(this.start, this.end));
+    console.log(Math.round(this.innerHeight / 70));
+    this.dataSource = new MatTableDataSource(this.getTableData(this.start, Math.round(this.innerHeight / 70)));
     this.updateIndex();
   }
 }
