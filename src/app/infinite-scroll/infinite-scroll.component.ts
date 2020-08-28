@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
-import { PeriodicElement } from '../shared/model/periodic-element.model';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+
+import { PeriodicElement } from '../shared/model/periodic-element.model';
+import { ElementService } from '../shared/services/element.service';
 
 @Component({
   selector: 'app-infinite-scroll',
@@ -10,38 +12,27 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class InfiniteScrollComponent implements OnInit {
   displayedColumns = ['position', 'name', 'weight', 'symbol'];
-  ELEMENT_DATA: PeriodicElement[] = JSON.parse(localStorage.elements);
   filteredDatas: PeriodicElement[];
   public dataSource: MatTableDataSource<PeriodicElement>;
+  public elementsStore = this.dataSource;
   public innerWidth: number = Math.round(window.innerWidth);
   public innerHeight: number = Math.round(window.innerHeight);
+  fragment: PeriodicElement[];
   filter = '';
   filtermax = 0;
   start: number;
   end: number;
   private sort: MatSort;
 
-  @ViewChild(MatSort) set matSort(ms: MatSort) {
-    this.sort = ms;
-    this.setDataSourceAttributes();
-  }
-
-  constructor() {
+  constructor(private elementService: ElementService) {
     this.start = 0;
-    this.end = 10;
+    this.end = Math.round(this.innerHeight / 30);
   }
 
-  /**
-   * This function enable to sort and use the paginator at the same time.
-   */
-  setDataSourceAttributes(): void {
-    this.dataSource.sort = this.sort;
-  }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event): void {
-    this.start = 0;
-    this.end = Math.round(this.innerHeight / 70);
+  onResize(event: any): void {
+    this.resetRange();
     this.dataSource = new MatTableDataSource(this.getTableData(this.start, this.end));
     console.log('resize');
   }
@@ -54,12 +45,10 @@ export class InfiniteScrollComponent implements OnInit {
     const tableViewHeight = e.target.offsetHeight; // viewport
     const tableScrollHeight = e.target.scrollHeight; // length of all table
     const scrollLocation = e.target.scrollTop; // how far user scrolled
-
-    // If the user has scrolled within 200px of the bottom, add more data
-    const buffer = 200;
+    const buffer = 100;
     const limit = tableScrollHeight - tableViewHeight - buffer;
     if (scrollLocation > limit) {
-      let loadedData;
+      let loadedData: any[];
       let data = this.dataSource.data;
       if (this.filter.length > 2) {
         data = this.filteredDatas;
@@ -69,15 +58,17 @@ export class InfiniteScrollComponent implements OnInit {
         }
       } else {
         data = this.dataSource.data;
+        console.log('Start: ' + this.start);
         loadedData = this.getTableData(this.start, this.end);
-        if (loadedData.length > 0) {
-          data.push(loadedData[0]);
+        if (loadedData !== undefined) {
+          loadedData.forEach(element => {
+            console.log(element);
+            data.push(element);
+            this.dataSource = new MatTableDataSource(data);
+          });
         }
       }
-
-      this.dataSource = new MatTableDataSource(data);
       this.updateIndex();
-      this.setDataSourceAttributes();
     }
   }
 
@@ -87,7 +78,20 @@ export class InfiniteScrollComponent implements OnInit {
    * @param end End of the Range
    */
   getTableData(start: number, end: number): any {
-    return this.ELEMENT_DATA.filter((value, index) => index >= start && index < end);
+    this.elementService.getElementsFragment(this.start, this.end).subscribe(
+      response => {
+        // console.log(response);
+        if (response.error) {
+          // handle error
+        } else {
+          this.fragment = response;
+        }
+      },
+      error => {
+        // handle error
+      }
+    );
+    return this.fragment;
   }
 
   /**
@@ -103,8 +107,9 @@ export class InfiniteScrollComponent implements OnInit {
    * set the next range
    */
   updateIndex(): void {
+    console.log('updated');
     this.start = this.end;
-    this.end = this.start + 1;
+    this.end = this.start + 20;
   }
 
   /**
@@ -112,7 +117,7 @@ export class InfiniteScrollComponent implements OnInit {
    * @param id is the id of the element
    */
   showId(id: number): void {
-    alert(this.ELEMENT_DATA[id - 1].position);
+    alert(this.dataSource.data[id - 1].position);
   }
 
   /**
@@ -122,28 +127,41 @@ export class InfiniteScrollComponent implements OnInit {
   applyFilter(filterValue: string): void {
     this.filter = filterValue;
     if (this.filter.length > 2) {
-      this.start = 0;
-      this.end = 9;
+      this.elementsStore = this.dataSource;
+      this.resetRange();
       this.filter = this.filter.trim(); // Remove whitespace
       this.filter = this.filter.toLowerCase(); // Datasource defaults to lowercase matches
-      const toFilter = new MatTableDataSource(this.ELEMENT_DATA);
+      const toFilter = new MatTableDataSource(this.fragment);
       toFilter.filter = this.filter;
       this.filteredDatas = toFilter.filteredData;
       this.filtermax = toFilter.filteredData.length;
       this.dataSource = this.getTableDataFiltered(this.start, this.end);
     } else {
-      this.start = 0;
-      this.end = 9;
       this.dataSource.filter = '';
-      this.dataSource = new MatTableDataSource(this.getTableData(this.start, this.end));
+      this.dataSource = this.elementsStore;
     }
-    this.setDataSourceAttributes();
   }
 
+  resetRange(): void {
+    console.log('restetted');
+    this.start = 0;
+    this.end = Math.round(this.innerHeight / 70);
+  }
 
   ngOnInit(): void {
-    console.log(Math.round(this.innerHeight / 70));
-    this.dataSource = new MatTableDataSource(this.getTableData(this.start, Math.round(this.innerHeight / 70)));
-    this.updateIndex();
+    this.elementService.getElementsFragment(this.start, this.end).subscribe(
+      response => {
+        console.log(response);
+        if (response.error) {
+          // handle error
+        } else {
+          this.dataSource = new MatTableDataSource(response);
+          this.updateIndex();
+        }
+      },
+      error => {
+        // handle error
+      }
+    );
   }
 }

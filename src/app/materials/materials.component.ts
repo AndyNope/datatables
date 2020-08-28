@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 
 import { EditDialogComponent } from '../shared/modal/edit/edit.dialog.component';
 import { AddDialogComponent } from '../shared/modal/add/add.dialog.component';
+import { ElementService } from '../shared/services/element.service';
 
 @Component({
   selector: 'app-materials',
@@ -16,6 +17,10 @@ export class MaterialsComponent implements OnInit {
   public myDataArray: MatTableDataSource<any>;
   private paginator: MatPaginator;
   private sort: MatSort;
+  pageEvent: PageEvent;
+  pageIndex = 1;
+  pageSize = 5;
+  length = 5;
 
   @ViewChild(MatSort) set matSort(ms: MatSort) {
     this.sort = ms;
@@ -27,7 +32,10 @@ export class MaterialsComponent implements OnInit {
     this.setDataSourceAttributes();
   }
 
-  constructor(private dialog: MatDialog) {
+  constructor(
+    private dialog: MatDialog,
+    private elementService: ElementService
+  ) {
     this.myDataArray = new MatTableDataSource(JSON.parse(localStorage.elements));
   }
 
@@ -89,8 +97,29 @@ export class MaterialsComponent implements OnInit {
     this.myDataArray.paginator = this.paginator;
     this.myDataArray.sort = this.sort;
   }
+  public getServerData(event?: PageEvent): any {
+    console.log(event);
+    this.elementService.getElements(event).subscribe(
+      response => {
+        console.log(response);
+        if (response.error) {
+          // handle error
+        } else {
+          this.myDataArray = response.elements;
+          this.pageIndex = response.pageIndex;
+          this.pageSize = response.pageSize;
+          this.length = response.length;
+        }
+      },
+      error => {
+        // handle error
+      }
+    );
+    return event;
+  }
 
   ngOnInit(): void {
     this.myDataArray.sort = this.sort;
+    console.log();
   }
 }

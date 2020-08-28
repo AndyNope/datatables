@@ -40,4 +40,4 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
 </table>
-<mat-paginator [length]="100" [pageSize]="5"></mat-paginator>
+<mat-paginator [length]="100" [pageSize]="pageSize" [length]="length" [pageIndex]="pageIndex" (page)="pageEvent = getServerData($event)"></mat-paginator>
