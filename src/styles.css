@@ -26,3 +26,13 @@ th.mat-sort-header-sorted {
     background-color: darkgrey;
     cursor: pointer
 }
+
+tr.mat-row,
+tr.mat-footer-row {
+    height: 30px !important;
+}
+
+.mat-cell,
+.mat-footer-cell {
+    font-size: 12px;
+}

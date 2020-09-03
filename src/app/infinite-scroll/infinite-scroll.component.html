@@ -1,10 +1,10 @@
 <h1>Infinite Scroll - Lazy Loading</h1>
 
 <div class="input-group mb-3">
-    <button type="button" class="btn btn-light" matTooltip="Add an element">+</button>
+    <button type="button" class="btn btn-light" matTooltip="Add an element" (click)="scroll(0,0)">+</button>
     <input class="form-control" matInput (keyup)="applyFilter($event.target.value)" placeholder="Search" matTooltip="Find value">
 </div>
-<div class="example-container mat-elevation-z8">
+<div id="#table-container" class="mat-elevation-z8">
 
     <mat-table #table [dataSource]="dataSource" (scroll)="onTableScroll($event)" matSort>
 

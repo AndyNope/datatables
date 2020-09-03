@@ -1,4 +1,4 @@
-.example-container {
+#table-container {
     display: flex;
     flex-direction: column;
     max-height: calc(100vh - 250px);
@@ -14,14 +14,4 @@
     position: sticky;
     top: 0;
     background: white;
-}
-
-.mat-row,
-.mat-footer-row {
-    min-height: 30px;
-}
-
-.mat-cell,
-.mat-footer-cell {
-    font-size: 12px;
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -13,30 +13,75 @@ import { ElementService } from '../shared/services/element.service';
   templateUrl: './materials.component.html'
 })
 export class MaterialsComponent implements OnInit {
+
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'edit'];
   public myDataArray: MatTableDataSource<any>;
   private paginator: MatPaginator;
   private sort: MatSort;
-  pageEvent: PageEvent;
-  pageIndex = 1;
-  pageSize = 5;
-  length = 5;
 
-  @ViewChild(MatSort) set matSort(ms: MatSort) {
-    this.sort = ms;
-    this.setDataSourceAttributes();
-  }
+  public innerHeight: number = Math.round(window.innerHeight);
+  pageNumber = [1, 2, 3, 4, 5, 6, 7];
+  pageEvent: PageEvent;
+  pageIndex = 0;
+  rowHeight = 30;
+  pageSize = Math.round((innerHeight - 300) / this.rowHeight);
+  length = 5;
 
   @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
     this.paginator = mp;
     this.setDataSourceAttributes();
   }
 
+  @ViewChild(MatSort) set matSort(ms: MatSort) {
+    this.sort = ms;
+    this.setDataSourceAttributes();
+  }
+
+  /**
+   * This function enable to sort and use the paginator at the same time.
+   */
+  setDataSourceAttributes(): void {
+    setTimeout(() => {
+      this.myDataArray.paginator = this.paginator;
+      this.myDataArray.sort = this.sort;
+    }, 200);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any): void {
+    this.initialiseData();
+  }
   constructor(
     private dialog: MatDialog,
     private elementService: ElementService
-  ) {
-    this.myDataArray = new MatTableDataSource(JSON.parse(localStorage.elements));
+  ) { console.log(this.pageIndex); }
+
+  initialiseData(): void {
+    console.log(this.pageIndex);
+    this.pageSize = Math.round((innerHeight - 300) / this.rowHeight);
+    this.elementService.getElementStart(this.pageSize).subscribe(
+      response => {
+        console.log(response);
+        if (response.error) {
+          // handle error
+        } else {
+          this.myDataArray = response.elements;
+          this.pageIndex = response.pageIndex;
+          this.pageSize = response.pageSize;
+          this.length = response.length;
+          console.log(response);
+          this.myDataArray.sort = this.sort;
+        }
+      },
+      error => {
+        // handle error
+      }
+    );
+    this.setDataSourceAttributes();
+  }
+
+  showID(id: number): void {
+    alert('Edit: ' + id);
   }
 
   /**
@@ -90,13 +135,7 @@ export class MaterialsComponent implements OnInit {
     });
   }
 
-  /**
-   * This function enable to sort and use the paginator at the same time.
-   */
-  setDataSourceAttributes(): void {
-    this.myDataArray.paginator = this.paginator;
-    this.myDataArray.sort = this.sort;
-  }
+
   public getServerData(event?: PageEvent): any {
     console.log(event);
     this.elementService.getElements(event).subscribe(
@@ -119,7 +158,6 @@ export class MaterialsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.myDataArray.sort = this.sort;
-    console.log();
+    this.initialiseData();
   }
 }

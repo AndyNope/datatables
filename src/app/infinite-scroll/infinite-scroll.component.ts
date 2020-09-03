@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, ElementRef, ViewContainerRef } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -24,17 +24,29 @@ export class InfiniteScrollComponent implements OnInit {
   end: number;
   private sort: MatSort;
 
-  constructor(private elementService: ElementService) {
-    this.start = 0;
-    this.end = Math.round(this.innerHeight / 30);
-  }
+  @ViewChild('table-container', { read: ViewContainerRef }) tableContainer: ElementRef;
 
+  constructor(private elementService: ElementService) { }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any): void {
-    this.resetRange();
-    this.dataSource = new MatTableDataSource(this.getTableData(this.start, this.end));
-    console.log('resize');
+    this.initData();
+  }
+
+  @ViewChild(MatSort) set matSort(ms: MatSort) {
+    this.sort = ms;
+    this.setDataSourceAttributes();
+  }
+
+  setDataSourceAttributes(): void {
+    if (this.dataSource !== undefined) {
+      this.dataSource.sort = this.sort;
+    }
+  }
+
+  scroll(x: number, y: number): void {
+    console.log('scrollTop');
+    document.querySelector('#table-container').scrollTo(0, 0);
   }
 
   /**
@@ -45,9 +57,10 @@ export class InfiniteScrollComponent implements OnInit {
     const tableViewHeight = e.target.offsetHeight; // viewport
     const tableScrollHeight = e.target.scrollHeight; // length of all table
     const scrollLocation = e.target.scrollTop; // how far user scrolled
-    const buffer = 100;
+    const buffer = 10;
     const limit = tableScrollHeight - tableViewHeight - buffer;
-    if (scrollLocation > limit) {
+    // console.log(this.tableContainer.nativeElement.value);
+    if (Math.round(scrollLocation) > limit) {
       let loadedData: any[];
       let data = this.dataSource.data;
       if (this.filter.length > 2) {
@@ -68,6 +81,7 @@ export class InfiniteScrollComponent implements OnInit {
           });
         }
       }
+      this.setDataSourceAttributes();
       this.updateIndex();
     }
   }
@@ -126,9 +140,9 @@ export class InfiniteScrollComponent implements OnInit {
    */
   applyFilter(filterValue: string): void {
     this.filter = filterValue;
+    console.log(this.filter.length);
     if (this.filter.length > 2) {
       this.elementsStore = this.dataSource;
-      this.resetRange();
       this.filter = this.filter.trim(); // Remove whitespace
       this.filter = this.filter.toLowerCase(); // Datasource defaults to lowercase matches
       const toFilter = new MatTableDataSource(this.fragment);
@@ -142,13 +156,9 @@ export class InfiniteScrollComponent implements OnInit {
     }
   }
 
-  resetRange(): void {
-    console.log('restetted');
+  initData(): void {
     this.start = 0;
-    this.end = Math.round(this.innerHeight / 70);
-  }
-
-  ngOnInit(): void {
+    this.end = Math.round(this.innerHeight / 30);
     this.elementService.getElementsFragment(this.start, this.end).subscribe(
       response => {
         console.log(response);
@@ -156,6 +166,7 @@ export class InfiniteScrollComponent implements OnInit {
           // handle error
         } else {
           this.dataSource = new MatTableDataSource(response);
+          this.elementsStore = this.dataSource;
           this.updateIndex();
         }
       },
@@ -163,5 +174,9 @@ export class InfiniteScrollComponent implements OnInit {
         // handle error
       }
     );
+  }
+
+  ngOnInit(): void {
+    this.initData();
   }
 }
