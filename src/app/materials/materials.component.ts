@@ -89,7 +89,9 @@ export class MaterialsComponent implements OnInit {
    * @param filterValue is the value to filter
    */
   applyFilter(filterValue: string): void {
-    if (filterValue.length > 2) {
+    console.log('typing');
+    this.setDataSourceAttributes();
+    if (filterValue.length > 0) {
       filterValue = filterValue.trim(); // Remove whitespace
       filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
       this.myDataArray.filter = filterValue;
@@ -159,5 +161,6 @@ export class MaterialsComponent implements OnInit {
 
   ngOnInit(): void {
     this.initialiseData();
+    this.setDataSourceAttributes();
   }
 }
